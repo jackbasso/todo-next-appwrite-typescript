@@ -1,4 +1,3 @@
-import { OPTIMIZED_FONT_PROVIDERS } from 'next/dist/shared/lib/constants';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TodoCard from './TodoCard';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
