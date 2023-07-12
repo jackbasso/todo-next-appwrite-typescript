@@ -2,14 +2,15 @@
 
 import { useBoardStore } from '@/store/BoardStore';
 import { useEffect } from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import Column from './Column';
 
 function Board() {
-  const [board, getBoard, setBoardState ] = useBoardStore((state) => [
+  const [board, getBoard, setBoardState, updateTodoInDB ] = useBoardStore((state) => [
     state.board,
     state.getBoard,
     state.setBoardState,
+    state.updateTodoInDB,
   ]);
 
   useEffect(() => {
@@ -30,7 +31,9 @@ function Board() {
       setBoardState({
         ...board,
         columns: rearrangedColumns,
+        
       });
+      return // Column bug solve ->Jack
     }
     // This step is needed as the indexes are stored as number 0,1,2 etc. insteads of id's with DND library
     const columns = Array.from(board.columns);
@@ -83,6 +86,7 @@ function Board() {
         todos:finishTodos,
       });
       // Update in DB
+      updateTodoInDB(todoMoved, finishCol.id)
       setBoardState({ ...board, columns: newColumns });
 
     }
@@ -90,8 +94,8 @@ function Board() {
 
   }
 
-  console.log(board)
-  return <DragDropContext onDragEnd={handleOnDragEnd}>
+  return (
+  <DragDropContext onDragEnd={handleOnDragEnd}>
     <Droppable droppableId="board" direction="horizontal" type="column">
       {(provided) => (
         <div className='grid grid-cols-1 md:grid-cols-3 gap-5 max-w-7xl mx-auto'
@@ -105,6 +109,7 @@ function Board() {
       )}
     </Droppable>
   </DragDropContext>
+  );
 }
 
 export default Board
