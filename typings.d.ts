@@ -1,3 +1,5 @@
+declare module 'react-beautiful-dnd';
+
 interface Board {
   columns: Map<TypedColumn, Column>
 }
